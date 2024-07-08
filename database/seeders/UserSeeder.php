@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
@@ -12,6 +14,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
+        DB::table('users')->delete();
+
+        if (!User::role(Role::ADMIN->value)->exists()) {
+            User::factory()->admin()->create();
+        }
+
+        User::factory(2)->moderator()->create();
+        User::factory(10)->create();
     }
 }
