@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Product
+ *
  * @package App\Models
  * @property int id
  * @property string name
@@ -18,8 +20,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int quantity
  * @property string thumbnail
  * @property int category_id
- * @property string created_at
- * @property string updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @mixin IdeHelperProduct
  */
 class Product extends Model
 {

@@ -24,4 +24,9 @@ class CategoryFactory extends Factory
             'parent_id' => null, // або вказати інші значення за потреби
         ];
     }
+
+    public function withParent(): static
+    {
+        return $this->state(fn ($attrs) => ['parent_id' => Category::all()->random()?->id]);
+    }
 }

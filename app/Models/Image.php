@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Image
+ *
  * @package App\Models
  * @property int id
  * @property string path
  * @property string imageable_type
  * @property int imageable_id
- * @property string created_at
- * @property string updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @mixin IdeHelperImage
  */
 class Image extends Model
 {
