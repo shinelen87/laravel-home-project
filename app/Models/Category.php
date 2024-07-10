@@ -2,31 +2,34 @@
 
 namespace App\Models;
 
+use App\Observers\CategoryObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Carbon;
+use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Carbon;
 
 /**
  * Class Category
  *
  * @package App\Models
- * @property int id
- * @property string name
- * @property string slug
- * @property int parent_id
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property int|null $parent_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @mixin IdeHelperCategory
  */
+#[ObservedBy([CategoryObserver::class])]
 class Category extends Model
 {
-    use HasFactory;
-
+    use HasFactory, HasSlug;
 
     /**
      * @var array<int, string>
@@ -45,14 +48,16 @@ class Category extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function parent(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'parent_id');
-    }
-
+    // Відношення до дочірніх категорій
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    // Відношення до батьківської категорії
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 
     public function products(): BelongsToMany

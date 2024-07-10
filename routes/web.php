@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'));
 
-Route::name('admin.')->prefix('admin')->group(function() {
+Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->group(function() {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('products', ProductsController::class)->except(['show']);
     Route::resource('categories', CategoriesController::class)->except(['show']);
