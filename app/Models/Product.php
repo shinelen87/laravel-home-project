@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * Class Product
@@ -26,7 +27,7 @@ use Illuminate\Support\Carbon;
  */
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     /**
      * @var array<int, string>
@@ -36,9 +37,20 @@ class Product extends Model
         'discount', 'quantity', 'thumbnail', 'category_id'
     ];
 
-    public function category()
+    public $sortable = [
+        'id',
+        'name',
+        'SKU',
+        'price',
+        'quantity',
+        'discount',
+        'created_at',
+        'updated_at'
+    ];
+
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public function images()
