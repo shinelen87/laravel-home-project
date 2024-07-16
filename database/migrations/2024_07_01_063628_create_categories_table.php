@@ -18,8 +18,6 @@ return new class extends Migration
             $table->bigInteger('parent_id')->unsigned()->nullable();
             $table->timestamps();
 
-            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
-
             $table->index(['parent_id']);
             $table->fullText(['slug']);
         });
@@ -31,7 +29,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->dropForeign(['parent_id']);
             $table->dropIndex(['parent_id']);
             $table->dropFullText(['slug']);
         });
