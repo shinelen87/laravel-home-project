@@ -29,7 +29,6 @@ class ProductFactory extends Factory
             'discount' => $this->faker->numberBetween(0, 100),
             'quantity' => $this->faker->numberBetween(1, 100),
             'thumbnail' => $this->faker->imageUrl,
-            'category_id' => Category::factory()
         ];
     }
 }

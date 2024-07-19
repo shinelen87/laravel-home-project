@@ -7,6 +7,11 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public array $bindings = [
+        \App\Repositories\Contract\ProductsRepositoryContract::class => \App\Repositories\ProductsRepository::class,
+        \App\Repositories\Contract\ImagesRepositoryContract::class => \App\Repositories\ImageRepository::class,
+        \App\Services\Contracts\FileServiceContract::class => \App\Services\FileService::class,
+    ];
     /**
      * Register any application services.
      */

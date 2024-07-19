@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Services\Contracts\FileServiceContract;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
 
 /**
@@ -48,13 +53,37 @@ class Product extends Model
         'updated_at'
     ];
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
 
-    public function images()
+    public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function setThumbnailAttribute($image): void
+    {
+        $fileService = app(FileServiceContract::class);
+
+        if (!empty($this->attributes['thumbnail'])) {
+             $fileService->remove($this->attributes['thumbnail']);
+        }
+
+        $this->attributes['thumbnail'] = $fileService->upload(
+            $image,
+            $this->images_dir
+        );
+    }
+
+    public function imagesDir(): Attribute
+    {
+        return Attribute::get(fn () => 'products/' . $this->attributes['slug']);
+    }
+
+    public function thumbnailUrl(): Attribute
+    {
+        return Attribute::get(fn () => Storage::url($this->attributes['thumbnail']));
     }
 }

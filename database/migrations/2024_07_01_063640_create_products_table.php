@@ -21,7 +21,6 @@ return new class extends Migration
             $table->tinyInteger('discount')->nullable();
             $table->unsignedSmallInteger('quantity')->default(0);
             $table->tinyText('thumbnail'); // main image
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->fullText(['slug']);
             $table->fullText(['name']);
