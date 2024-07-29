@@ -20,3 +20,5 @@ yarn-error.log
 /.vscode
 _ide_*.php
 laradumps.yaml
+.env.testing
+.env.testing
