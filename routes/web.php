@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Ajax\Products\UploadThumbnailController;
+use App\Http\Controllers\Ajax\RemoveThumbnailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +24,9 @@ Route::name('ajax.')->prefix('ajax')->group(function() {
     Route::group(['auth', 'role:admin|moderator'], function() {
         Route::post('products/{product}/images', \App\Http\Controllers\Ajax\Products\UploadImages::class)->name('product.images.upload');
         Route::delete('images/{image}', \App\Http\Controllers\Ajax\RemoveImageController::class)->name('image.remove');
+        Route::post('products/{product}/thumbnail', UploadThumbnailController::class)->name('thumbnail.upload'); // додано цей рядок
     });
 });
+
+Route::delete('products/{product}/thumbnail', [RemoveThumbnailController::class, '__invoke'])->name('ajax.thumbnail.remove');
+

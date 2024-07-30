@@ -41,10 +41,15 @@ class Image extends Model
 
     public function setPathAttribute($path): void
     {
-        $this->attributes['path'] = app(FileServiceContract::class)->upload(
-            $path['image'],
-            $path['directory'] ?? null
-        );
+        if (is_array($path) && isset($path['image'])) {
+            $this->attributes['path'] = app(FileServiceContract::class)->upload(
+                $path['image'],
+                $path['directory'] ?? null
+            );
+        } else {
+            // Обробка помилки або налаштування значення за замовчуванням
+            $this->attributes['path'] = $path;
+        }
     }
 
     public function url(): Attribute

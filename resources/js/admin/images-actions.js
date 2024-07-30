@@ -1,35 +1,61 @@
 const selectors = {
-    wrapper: "#images-wrapper",
-    item: ".images-wrapper-item",
-    removeBtn: ".images-wrapper-item-remove",
-    addBtn: ".add-images",
-    input: "#images",
-    spinner: "#spinner"
+    thumbnail: {
+        input: '#thumbnail',
+        preview: '#thumbnail-preview',
+        removeBtn: '#thumbnail-remove',
+        addBtn: '.upload-thumbnail',
+        spinner: '#spinner-thumbnail'
+    },
+    gallery: {
+        input: '#images',
+        wrapper: '#images-wrapper',
+        removeBtn: '.images-wrapper-item-remove',
+        addBtn: '.add-images',
+        spinner: '#spinner'
+    }
 };
 
-const template = `
-<div class='mb-4 col-md-6 images-wrapper-item'>
-    <button class="btn btn-danger images-wrapper-item-remove"
-        data-url="/ajax/images/_id_">
-        <i class="fa-solid fa-minus"></i>
-    </button>
-    <img src='_url_' style='width: 100%' />
-</div>
-`
-
 $(document).ready(function () {
-    $(selectors.addBtn).on('click', function (e) {
+    $(document).on('click', selectors.gallery.addBtn, function (e) {
         e.preventDefault();
-        $(selectors.input).click();
+        $(selectors.gallery.input).click();
     });
 
-    $(selectors.input).on('change', function(e) {
+    $(document).on('click', selectors.thumbnail.addBtn, function (e) {
         e.preventDefault();
-        const uploadUrl = $(selectors.addBtn).data('upload');
+        $(selectors.thumbnail.input).click();
+    });
+
+    $(selectors.thumbnail.input).on('change', function(e) {
+        e.preventDefault();
+        const uploadUrl = $(selectors.thumbnail.addBtn).data('upload');
         const formData = new FormData();
 
-        $(selectors.spinner).removeClass('d-none');
-        $(selectors.addBtn).addClass('disabled');
+        $(selectors.thumbnail.spinner).removeClass('d-none');
+        $(selectors.thumbnail.addBtn).addClass('disabled');
+
+        formData.append(`thumbnail`, this.files[0], this.files[0].name);
+
+        axios.post(
+            uploadUrl,
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" }
+            }
+        ).then((response) => {
+
+        }).catch((error) => {
+
+        })
+    });
+
+    $(selectors.gallery.input).on('change', function(e) {
+        e.preventDefault();
+        const uploadUrl = $(selectors.gallery.addBtn).data('upload');
+        const formData = new FormData();
+
+        $(selectors.gallery.spinner).removeClass('d-none');
+        $(selectors.gallery.addBtn).addClass('disabled');
 
         for(let i = 0; i < this.files.length; i++) {
             formData.append(`images[${i}]`, this.files[i], this.files[i].name);
@@ -48,7 +74,7 @@ $(document).ready(function () {
         })
     });
 
-    $(selectors.removeBtn).on('click', function (e) {
+    $(selectors.gallery.removeBtn).on('click', function (e) {
         e.preventDefault();
 
         const $btn = $(this);

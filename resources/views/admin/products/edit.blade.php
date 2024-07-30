@@ -131,20 +131,31 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="thumbnail"
-                                   class="col-md-4 col-form-label text-md-end">{{ __('Thumbnail') }}</label>
-
-                            <div class="col-md-12 mb-4 d-flex align-items-center justify-content-center">
-                                <img src="{{$product->thumbnailUrl}}" id="thumbnail-preview" style="width: 50%;" />
+                            <label for="thumbnail" class="col-md-4 col-form-label text-md-end">{{ __('Thumbnail') }}</label>
+                            <div class="col-12 mb-4 d-flex align-items-center justify-content-center position-relative">
+                                <button id="thumbnail-remove" class="btn btn-danger images-wrapper-item-remove" data-url="{{ route('ajax.thumbnail.remove', $product) }}">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <img src="{{$product->thumbnailUrl}}" id="thumbnail-preview" style="width: 50%;"/>
                             </div>
                             <div class="col-md-12">
-                                <input id="thumbnail" type="file"
-                                       class="form-control @error('thumbnail') is-invalid @enderror" name="thumbnail">
-
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input id="thumbnail" type="file" class="form-control @error('thumbnail') is-invalid @enderror d-none" name="thumbnail">
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                                        <div id="spinner-thumbnail" class="spinner-border d-none me-2" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <button class="btn btn-outline-success upload-thumbnail" data-upload="{{ route('ajax.thumbnail.upload', $product) }}">
+                                            Upload file <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 @error('thumbnail')
                                 <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+            <strong>{{ $message }}</strong>
+        </span>
                                 @enderror
                             </div>
                         </div>
@@ -186,10 +197,14 @@
 
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-end">
-                        <button type="submit" class="btn btn-outline-success">Create</button>
+                        <button type="submit" class="btn btn-outline-success">Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+
+@push('footer-js')
+    @vite(['resources/js/admin/images-preview.js', 'resources/js/admin/images-actions.js'])
+@endpush

@@ -74,10 +74,14 @@ class Product extends Model
              $fileService->remove($this->attributes['thumbnail']);
         }
 
-        $this->attributes['thumbnail'] = $fileService->upload(
-            $image,
-            $this->images_dir
-        );
+        if ($image) {
+            $this->attributes['thumbnail'] = $fileService->upload(
+                $image,
+                $this->images_dir
+            );
+        } else {
+            $this->attributes['thumbnail'] = null;
+        }
     }
 
     public function imagesDir(): Attribute
@@ -87,6 +91,6 @@ class Product extends Model
 
     public function thumbnailUrl(): Attribute
     {
-        return Attribute::get(fn () => Storage::url($this->attributes['thumbnail']));
+        return Attribute::get(fn () => $this->attributes['thumbnail'] ? Storage::url($this->attributes['thumbnail']) : '');
     }
 }
