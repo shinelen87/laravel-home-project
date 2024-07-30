@@ -84,6 +84,7 @@ class ProductsController extends Controller
         $this->middleware('permission:' . Permission::DELETE->value);
 
         $product->categories()->detach();
+        $product->images()->delete();
         $product->deleteOrFail();
 
         notify()->success("Product '$product->name' was removed!");

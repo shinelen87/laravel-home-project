@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\ImageObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Services\Contracts\FileServiceContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Image
@@ -20,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @mixin IdeHelperImage
  */
+#[ObservedBy([ImageObserver::class])]
 class Image extends Model
 {
     use HasFactory;
@@ -40,5 +45,10 @@ class Image extends Model
             $path['image'],
             $path['directory'] ?? null
         );
+    }
+
+    public function url(): Attribute
+    {
+        return Attribute::get(fn () => Storage::url($this->attributes['path']));
     }
 }

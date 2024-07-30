@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Observers\ProductObserver;
 use App\Services\Contracts\FileServiceContract;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property Carbon|null $updated_at
  * @mixin IdeHelperProduct
  */
+#[ObservedBy([ProductObserver::class])]
 class Product extends Model
 {
     use HasFactory, Sortable;
