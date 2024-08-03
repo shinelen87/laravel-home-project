@@ -8,6 +8,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
 {
+    protected $redirectRoute = 'admin.categories.create';
+
     /**
      * Determine if the user is authorized to make this request.
      */

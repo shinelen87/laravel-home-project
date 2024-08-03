@@ -10,5 +10,5 @@ interface ProductsRepositoryContract
 {
     public function create(CreateRequest $request): Product|false;
 
-    public function update(Product $product, CreateRequest $request): bool;
+    public function update(Product $product, EditRequest $request): bool;
 }

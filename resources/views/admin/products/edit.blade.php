@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex align-items-center justify-content-center pt-5">
-                <form class="card w-50" method="POST" enctype="multipart/form-data" action="{{route('admin.products.store')}}">
+                <form class="card w-50" method="POST" enctype="multipart/form-data"
+                      action="{{route('admin.products.store')}}">
                     @csrf
 
                     <h5 class="card-header">Edit product</h5>
@@ -133,15 +134,34 @@
                         <div class="row mb-3">
                             <label for="thumbnail"
                                    class="col-md-4 col-form-label text-md-end">{{ __('Thumbnail') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="thumbnail" type="file"
-                                       class="form-control @error('thumbnail') is-invalid @enderror" name="thumbnail">
-
+                            <div class="col-12 mb-4 d-flex align-items-center justify-content-center position-relative">
+                                <button id="thumbnail-remove" class="btn btn-danger images-wrapper-item-remove"
+                                        data-url="{{ route('ajax.thumbnail.remove', $product) }}">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <img src="{{$product->thumbnailUrl}}" id="thumbnail-preview" style="width: 50%;"/>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input id="thumbnail" type="file"
+                                               class="form-control @error('thumbnail') is-invalid @enderror d-none"
+                                               name="thumbnail">
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                                        <div id="spinner-thumbnail" class="spinner-border d-none me-2" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <button class="btn btn-outline-success upload-thumbnail"
+                                                data-upload="{{ route('ajax.thumbnail.upload', $product) }}">
+                                            Upload file <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                                 @error('thumbnail')
                                 <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
                         </div>
@@ -150,24 +170,48 @@
                             <label for="images"
                                    class="col-md-4 col-form-label text-md-end">{{ __('Additional Images') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="images" type="file"
-                                       class="form-control @error('images') is-invalid @enderror" name="images[]" multiple>
-
-                                @error('images')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            <div class="col-12 mb-4 d-flex align-items-center justify-content-center">
+                                <div id="images-wrapper" class="row">
+                                    @foreach($product->images as $image)
+                                        <div class='mb-4 col-md-6 images-wrapper-item'>
+                                            <button class="btn btn-danger images-wrapper-item-remove"
+                                                    data-url="{{route('ajax.image.remove', $image)}}">
+                                                <i class="fa-solid fa-minus"></i>
+                                            </button>
+                                            <img src='{{$image->url}}' style='width: 100%'/>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input id="images" type="file"
+                                               class="form-control @error('images') is-invalid @enderror d-none"
+                                               name="images[]" multiple>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center justify-content-end">
+                                        <div id="spinner" class="spinner-border d-none me-2" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <button class="btn btn-outline-success add-images"
+                                                data-upload="{{route('ajax.product.images.upload', $product)}}"
+                                        >Upload images <i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-end">
-                        <button type="submit" class="btn btn-outline-success">Create</button>
+                        <button type="submit" class="btn btn-outline-success">Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @endsection
+
+@push('footer-js')
+    @vite(['resources/js/admin/images-preview.js', 'resources/js/admin/images-actions.js'])
+@endpush

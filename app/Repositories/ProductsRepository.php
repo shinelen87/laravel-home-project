@@ -36,7 +36,7 @@ class ProductsRepository implements ProductsRepositoryContract
         }
     }
 
-    public function update(Product $product, CreateRequest $request): bool
+    public function update(Product $product, EditRequest $request): bool
     {
         try {
             DB::beginTransaction();
@@ -70,7 +70,7 @@ class ProductsRepository implements ProductsRepositoryContract
         }
     }
 
-    protected function formRequestData(CreateRequest $request): array
+    protected function formRequestData(CreateRequest|EditRequest $request): array
     {
         return [
             'attributes' => collect($request->validated())
