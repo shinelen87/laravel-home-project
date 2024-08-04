@@ -100,4 +100,14 @@ class Product extends Model
             fn() => round($this->attributes['price'] - ($this->attributes['price'] * ($this->attributes['discount'] / 100)), 2)
         );
     }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'wishlist',
+            'product_id',
+            'user_id'
+        );
+    }
 }
