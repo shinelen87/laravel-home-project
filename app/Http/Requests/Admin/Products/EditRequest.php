@@ -25,7 +25,6 @@ class EditRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route('product')->id;
-        dd($id);
 
         return [
             'name' => ['required', 'string', 'min:2', 'max:255', Rule::unique(Product::class, 'name')->ignore($id)],

@@ -93,4 +93,11 @@ class Product extends Model
     {
         return Attribute::get(fn () => $this->attributes['thumbnail'] ? Storage::url($this->attributes['thumbnail']) : '');
     }
+
+    public function finalPrice(): Attribute
+    {
+        return Attribute::get(
+            fn() => round($this->attributes['price'] - ($this->attributes['price'] * ($this->attributes['discount'] / 100)), 2)
+        );
+    }
 }

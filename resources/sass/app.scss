@@ -10,3 +10,51 @@
 @import 'admin/products-gallery';
 
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+
+.product-card {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+
+    &-image {
+        height: 250px;
+    }
+
+    .card {
+        &-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        &-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+    }
+}
+
+.product-card-image-wrapper {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+.product-card-image {
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-card-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #888;
+    font-size: 14px;
+    background-color: #f0f0f0;
+}
+

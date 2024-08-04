@@ -16,9 +16,11 @@ Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->grou
     Route::resource('categories', CategoriesController::class)->except(['show']);
 });
 
+Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['show', 'index']);
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::name('ajax.')->prefix('ajax')->group(function() {
     Route::group(['auth', 'role:admin|moderator'], function() {
@@ -30,3 +32,9 @@ Route::name('ajax.')->prefix('ajax')->group(function() {
 
 Route::delete('products/{product}/thumbnail', [RemoveThumbnailController::class, '__invoke'])->name('ajax.thumbnail.remove');
 
+Route::name('cart.')->prefix('cart')->group(function() {
+    Route::get('/', [\App\Http\Controllers\CartController::class, 'index'])->name('index');
+    Route::post('{product}', [\App\Http\Controllers\CartController::class, 'add'])->name('add');
+    Route::delete('/', [\App\Http\Controllers\CartController::class, 'remove'])->name('remove');
+    Route::put('{product}/count', [\App\Http\Controllers\CartController::class, 'count'])->name('count');
+});

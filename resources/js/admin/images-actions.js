@@ -7,13 +7,23 @@ const selectors = {
         spinner: '#spinner-thumbnail'
     },
     gallery: {
-        input: '#images',
-        wrapper: '#images-wrapper',
+        input: '#edit-images',
+        wrapper: '#edit-images-wrapper',
         removeBtn: '.images-wrapper-item-remove',
         addBtn: '.add-images',
         spinner: '#spinner'
     }
 };
+
+const template = `
+<div class='mb-4 col-md-6 images-wrapper-item'>
+    <button class="btn btn-danger images-wrapper-item-remove"
+        data-url="/ajax/images/_id_">
+        <i class="fa-solid fa-minus"></i>
+    </button>
+    <img src='_url_' style='width: 100%' />
+</div>
+`
 
 $(document).ready(function () {
     $(document).on('click', selectors.gallery.addBtn, function (e) {
@@ -68,9 +78,25 @@ $(document).ready(function () {
                 headers: { "Content-Type": "multipart/form-data" }
             }
         ).then((response) => {
+            if (response.data?.length > 0) {
+                for (const key in response.data) {
+                    const imageBlock = template
+                        .replace('_url_', response.data[key].url)
+                        .replace('_id_', response.data[key].id)
+
+                    $(selectors.gallery.wrapper).append(imageBlock)
+                }
+            }
 
         }).catch((error) => {
-
+            console.error(error);
+            iziToast.warning({
+                message: error.data.message,
+                position: 'topRight'
+            });
+        }).finally(() => {
+            $(selectors.spinner).addClass('d-none');
+            $(selectors.addBtn).removeClass('disabled');
         })
     });
 
