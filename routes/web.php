@@ -8,8 +8,6 @@ use App\Http\Controllers\Ajax\RemoveThumbnailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('welcome'));
-
 Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->group(function() {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('products', ProductsController::class)->except(['show']);
@@ -38,3 +36,15 @@ Route::name('cart.')->prefix('cart')->group(function() {
     Route::delete('/', [\App\Http\Controllers\CartController::class, 'remove'])->name('remove');
     Route::put('{product}/count', [\App\Http\Controllers\CartController::class, 'count'])->name('count');
 });
+
+Route::middleware(['auth'])->group(function() {
+    Route::post('wishlist/{product}', [\App\Http\Controllers\WishListController::class, 'add'])->name('wishlist.add');
+    Route::delete('wishlist/{product}', [\App\Http\Controllers\WishListController::class, 'remove'])->name('wishlist.remove');
+
+
+    Route::name('account.')->prefix('account')->group(function() {
+        Route::get('/', [App\Http\Controllers\Account\HomeController::class, 'index'])->name('home');
+        Route::get('wishlist', App\Http\Controllers\Account\WishlistController::class)->name('wishlist');
+    });
+});
+

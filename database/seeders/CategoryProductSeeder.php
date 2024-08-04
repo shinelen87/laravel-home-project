@@ -21,7 +21,7 @@ class CategoryProductSeeder extends Seeder
         Storage::deleteDirectory('faker');
 
         $createProduct = function (Category $category) {
-            $products = Product::factory(rand(2, 5))->create()->pluck('id');
+            $products = Product::factory(rand(2, 5))->withThumbnail()->create()->pluck('id');
             $category->products()->attach($products);
         };
 
