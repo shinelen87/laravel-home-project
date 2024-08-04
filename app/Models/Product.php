@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\ProductObserver;
+use App\Observers\WishListObserver;
 use App\Services\Contracts\FileServiceContract;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -32,7 +33,7 @@ use Kyslik\ColumnSortable\Sortable;
  * @property Carbon|null $updated_at
  * @mixin IdeHelperProduct
  */
-#[ObservedBy([ProductObserver::class])]
+#[ObservedBy([ProductObserver::class, WishListObserver::class])]
 class Product extends Model
 {
     use HasFactory, Sortable;
@@ -108,6 +109,13 @@ class Product extends Model
             'wishlist',
             'product_id',
             'user_id'
+        );
+    }
+
+    public function exist(): Attribute
+    {
+        return Attribute::get(
+            fn() => $this->quantity > 0
         );
     }
 }
