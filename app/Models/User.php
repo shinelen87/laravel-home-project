@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\WishType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -63,4 +65,45 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function wishes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'wishlist',
+            'user_id',
+            'product_id'
+        )->withPivot(['price', 'exist']);
+    }
+
+    public function addToWish(Product $product, WishType $type = WishType::PRICE): void
+    {
+        $wished = $this->wishes()->find($product);
+
+        if ($wished) {
+            $this->wishes()->updateExistingPivot($wished, [$type->value => true]);
+        } else {
+            $this->wishes()->attach($product, [$type->value => true]);
+        }
+    }
+
+    public function removeFromWish(Product $product, WishType $type = WishType::PRICE): void
+    {
+        $this->wishes()->updateExistingPivot($product, [$type->value => false]);
+        $product = $this->wishes()->find($product);
+
+        if (!$product->pivot->exist && !$product->pivot->price) {
+            $this->wishes()->detach($product);
+        }
+    }
+
+    public function isWishedProduct(Product $product, string $type = null): bool
+    {
+        $typeEnum = WishType::tryFrom($type) ?? WishType::PRICE;
+
+        return $this->wishes()
+            ->where('product_id', $product->id)
+            ->wherePivot($typeEnum->value, true)
+            ->exists();
+    }
 }
