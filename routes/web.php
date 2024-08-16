@@ -15,6 +15,7 @@ Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->grou
 });
 
 Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['show', 'index']);
+Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
 
 Auth::routes();
 
@@ -45,6 +46,11 @@ Route::middleware(['auth'])->group(function() {
     Route::name('account.')->prefix('account')->group(function() {
         Route::get('/', [App\Http\Controllers\Account\HomeController::class, 'index'])->name('home');
         Route::get('wishlist', App\Http\Controllers\Account\WishlistController::class)->name('wishlist');
+    });
+
+    Route::prefix('paypal')->name('paypal.')->group(function() {
+        Route::post('order', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'create'])->name('order.create');
+        Route::post('order/{vendorOrderId}/capture', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'capture'])->name('order.capture');
     });
 });
 

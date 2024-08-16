@@ -67,6 +67,11 @@ class Product extends Model
         return $this->morphMany(Image::class, 'imageable');
     }
 
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class);
+    }
+
     public function setThumbnailAttribute($image): void
     {
         $fileService = app(FileServiceContract::class);
