@@ -16,6 +16,7 @@
         "laravel/telescope": "^5.1",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.5",
+        "laraveldaily/laravel-invoices": "^4.0",
         "nesbot/carbon": "*",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-sluggable": "^3.6",

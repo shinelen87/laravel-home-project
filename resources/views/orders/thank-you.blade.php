@@ -93,6 +93,14 @@
                     </table>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12 mt-5 text-center">
+                    <a class="btn btn-secondary" href="{{route('home')}}">Home page</a>
+                    @if($showInvoiceBtn)
+                        <a class="btn btn-outline-success" href="{{route('invoice', $order)}}">Get invoice</a>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 @endsection
