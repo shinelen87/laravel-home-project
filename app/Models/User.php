@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\WishType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -74,6 +75,11 @@ class User extends Authenticatable
             'user_id',
             'product_id'
         )->withPivot(['price', 'exist']);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function addToWish(Product $product, WishType $type = WishType::PRICE): void
