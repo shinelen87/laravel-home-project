@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Repositories\Contract\ProductsRepositoryContract::class => \App\Repositories\ProductsRepository::class,
         \App\Repositories\Contract\ImagesRepositoryContract::class => \App\Repositories\ImageRepository::class,
         \App\Services\Contracts\FileServiceContract::class => \App\Services\FileService::class,
+        \App\Services\Contracts\PaypalServiceContract::class => \App\Services\PaypalService::class,
     ];
     /**
      * Register any application services.
