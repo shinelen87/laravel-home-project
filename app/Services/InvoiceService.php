@@ -46,8 +46,8 @@ class InvoiceService implements InvoiceServiceContract
         if ($order->status->name->value === OrderStatusEnum::InProcess->value) {
             $invoice->payUntilDays(config('invoices.date.pay_until_days'));
         }
-
-        $invoicePath = storage_path("app/public/{$fileName}.pdf");
+        
+        $invoicePath = str_replace(url('/storage'), storage_path('app/public'), $invoice->url());
 
         $order->notify(new OrderInvoiceNotification($order, $invoicePath));
 
