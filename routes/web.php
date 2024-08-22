@@ -54,5 +54,7 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/', [App\Http\Controllers\Account\HomeController::class, 'index'])->name('home');
         Route::get('wishlist', App\Http\Controllers\Account\WishlistController::class)->name('wishlist');
     });
+
+    Route::get('invoices/{order}', \App\Http\Controllers\InvoicesController::class)->name('invoice');
 });
 
