@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Listeners\RestoreCartOnLogin;
 use App\Listeners\RestoreCartOnLogout;
+use App\Services\Contracts\InvoiceServiceContract;
+use App\Services\InvoiceService;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
@@ -16,6 +18,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Repositories\Contract\ImagesRepositoryContract::class => \App\Repositories\ImageRepository::class,
         \App\Services\Contracts\FileServiceContract::class => \App\Services\FileService::class,
         \App\Services\Contracts\PaypalServiceContract::class => \App\Services\PaypalService::class,
+        \App\Repositories\Contract\OrderRepositoryContract::class => \App\Repositories\OrderRepository::class,
+        InvoiceServiceContract::class => InvoiceService::class,
     ];
     /**
      * Register any application services.

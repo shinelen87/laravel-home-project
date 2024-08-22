@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Ajax\Products\UploadThumbnailController;
 use App\Http\Controllers\Ajax\RemoveThumbnailController;
+use App\Http\Controllers\Pages\ThankYouController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->grou
 
 Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['show', 'index']);
 Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
+Route::get('orders/{vendorOrderId}/thank-you', ThankYouController::class)->name('thankyou');
 
 Auth::routes();
 
@@ -26,6 +28,11 @@ Route::name('ajax.')->prefix('ajax')->group(function() {
         Route::post('products/{product}/images', \App\Http\Controllers\Ajax\Products\UploadImages::class)->name('product.images.upload');
         Route::delete('images/{image}', \App\Http\Controllers\Ajax\RemoveImageController::class)->name('image.remove');
         Route::post('products/{product}/thumbnail', UploadThumbnailController::class)->name('thumbnail.upload'); // додано цей рядок
+    });
+
+    Route::prefix('paypal')->name('paypal.')->group(function() {
+        Route::post('order', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'create'])->name('order.create');
+        Route::post('order/{vendorOrderId}/capture', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'capture'])->name('order.capture');
     });
 });
 
@@ -48,9 +55,6 @@ Route::middleware(['auth'])->group(function() {
         Route::get('wishlist', App\Http\Controllers\Account\WishlistController::class)->name('wishlist');
     });
 
-    Route::prefix('paypal')->name('paypal.')->group(function() {
-        Route::post('order', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'create'])->name('order.create');
-        Route::post('order/{vendorOrderId}/capture', [\App\Http\Controllers\Ajax\Payments\PaypalController::class, 'capture'])->name('order.capture');
-    });
+    Route::get('invoices/{order}', \App\Http\Controllers\InvoicesController::class)->name('invoice');
 });
 
