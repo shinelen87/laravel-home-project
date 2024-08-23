@@ -15,6 +15,6 @@ class OrderCreatedEvent
      */
     public function __construct(public Order $order)
     {
-        logs()->info('event');
+        logs()->info('OrderCreatedEvent dispatched');
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Listeners\RestoreCartOnLogin;
-use App\Listeners\RestoreCartOnLogout;
+use App\Listeners\SaveCartOnLogout;
 use App\Services\Contracts\InvoiceServiceContract;
 use App\Services\InvoiceService;
 use Illuminate\Auth\Events\Login;
@@ -37,14 +37,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
-        Event::listen(
-            Login::class,
-        RestoreCartOnLogin::class
-    );
-
-        Event::listen(
-            Login::class,
-            RestoreCartOnLogout::class
-        );
     }
 }

@@ -18,4 +18,7 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://telegram.org; frame-src 'self' https://oauth.telegram.org; img-src 'self';"
+
 </IfModule>
