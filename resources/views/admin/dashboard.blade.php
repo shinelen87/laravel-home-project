@@ -1,25 +1,21 @@
-<!-- resources/views/admin/dashboard.blade.php -->
 @extends('layouts.admin')
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Admin Dashboard') }}</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        {{ __('You are logged in as Admin!') }}
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col">
+                @hasrole('admin')
+                @unless(auth()->user()->telegram_id)
+                    <h3>Telegram auth</h3>
+                    <script async
+                            src="https://telegram.org/js/telegram-widget.js?22"
+                            data-telegram-login="{{ config('services.telegram-bot-api.name') }}"
+                            data-size="large"
+                            data-auth-url="{{ route('callbacks.telegram') }}"
+                            data-request-access="write"></script>
+                @endunless
+                @endhasrole
             </div>
         </div>
     </div>
 @endsection
-

@@ -6,7 +6,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class RestoreCartOnLogout
+class SaveCartOnLogout
 {
     /**
      * Create the event listener.
@@ -21,10 +21,8 @@ class RestoreCartOnLogout
      */
     public function handle(object $event): void
     {
-        $cart = Cart::instance('cart');
-
-        if ($cart->count() > 0) {
-            $cart->store($event->user->id);
+        if (Cart::instance('cart')->count() > 0) {
+            Cart::instance('cart')->store($event->user->id . '_cart');
         }
     }
 }

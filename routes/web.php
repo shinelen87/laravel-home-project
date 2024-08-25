@@ -1,13 +1,20 @@
 <?php
 
+use App\Events\OrderCreatedEvent;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Ajax\Products\UploadThumbnailController;
 use App\Http\Controllers\Ajax\RemoveThumbnailController;
 use App\Http\Controllers\Pages\ThankYouController;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+Route::get('test', function () {
+    $order = Order::take(1)->first();
+    OrderCreatedEvent::dispatchIf($order, $order);
+});
 
 Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->group(function() {
     Route::get('/', DashboardController::class)->name('dashboard');
@@ -56,5 +63,11 @@ Route::middleware(['auth'])->group(function() {
     });
 
     Route::get('invoices/{order}', \App\Http\Controllers\InvoicesController::class)->name('invoice');
+});
+
+Route::name('callbacks.')->prefix('callbacks')->group(function() {
+    Route::get('telegram', \App\Http\Controllers\Callbacks\JoinTelegramController::class)
+        ->middleware(['role:admin'])
+        ->name('telegram');
 });
 

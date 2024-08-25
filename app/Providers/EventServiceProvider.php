@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCreatedEvent;
+use App\Listeners\Orders\CreatedListener;
+use App\Listeners\RestoreCartOnLogin;
+use App\Listeners\SaveCartOnLogout;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +23,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrderCreatedEvent::class => [
+            CreatedListener::class,
+        ],
+        Login::class => [
+            RestoreCartOnLogin::class
+        ],
+        Logout::class => [
+            SaveCartOnLogout::class
+        ]
     ];
 
     /**
