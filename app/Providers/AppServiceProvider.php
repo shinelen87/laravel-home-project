@@ -2,14 +2,13 @@
 
 namespace App\Providers;
 
-use App\Listeners\RestoreCartOnLogin;
-use App\Listeners\SaveCartOnLogout;
+use App\Models\Product;
+use App\Policies\Api\ProductPolicy;
 use App\Services\Contracts\InvoiceServiceContract;
 use App\Services\InvoiceService;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,5 +36,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+        Gate::policy(Product::class, ProductPolicy::class);
     }
 }

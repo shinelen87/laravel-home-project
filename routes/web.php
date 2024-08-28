@@ -23,6 +23,8 @@ Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->grou
 });
 
 Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['show', 'index']);
+Route::resource('categories', CategoriesController::class)->only(['show', 'index']);
+
 Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
 Route::get('orders/{vendorOrderId}/thank-you', ThankYouController::class)->name('thankyou');
 

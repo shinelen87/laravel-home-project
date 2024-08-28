@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Product
@@ -122,5 +123,31 @@ class Product extends Model
         return Attribute::get(
             fn() => $this->quantity > 0
         );
+    }
+
+    public function scopeExists(Builder $query): Builder
+    {
+        return $query->where('quantity', '>', 0);
+    }
+
+    public function inStock(): bool
+    {
+        return $this->quantity > 0;
+    }
+
+    public function getAvailabilityMessage(): string
+    {
+        return $this->inStock() ? 'In stock' : 'Out of stock';
+    }
+
+
+    public function calculateFinalPrice(): float
+    {
+        return $this->price - ($this->discount ?? 0);
+    }
+
+    public function formattedPrice(): string
+    {
+        return '$' . number_format($this->price, 2);
     }
 }
