@@ -20,7 +20,10 @@ window.Echo.private('admin-channel')
 
         console.log('event', event)
         iziToast.success({
-            title: `You have new order. With total: ${event.total}$`,
-            position: 'topRight'
+            title: `You have a new order. Total: ${event.total}$`,
+            message: `<a href="${event.url}" target="_blank">View Order</a>`,
+            position: 'topRight',
+            timeout: 5000,
+            escapeHtml: false
         })
     })

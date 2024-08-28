@@ -66,7 +66,7 @@ class PaypalController extends Controller
             DB::commit();
 
             OrderCreatedEvent::dispatchIf($order->exists, $order);
-            OrderCreated::dispatch($order->total);
+            OrderCreated::dispatch($order->total, "http://laravel.test:8084/admin/orders");
 
             return response()->json($order);
         } catch (\Exception $exception) {

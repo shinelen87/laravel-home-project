@@ -18,7 +18,7 @@ class OrderCreated implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public float $total)
+    public function __construct(public float $total, public string $url)
     {
         $this->broadcastVia('reverb');
     }
