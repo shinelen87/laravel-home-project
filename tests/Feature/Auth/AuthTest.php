@@ -33,7 +33,7 @@ class AuthTest extends TestCase
         $response = $this->post(route('register'), $data);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect('http://localhost/home');
 
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
@@ -67,7 +67,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect('http://localhost/account');
     }
 
     public function test_login_with_invalid_data()
