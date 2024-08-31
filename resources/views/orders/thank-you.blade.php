@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center mb-5">
-                    <h3>The order was completed, thank you!</h3>
+                    <h3>The order was completed, thank you!!!</h3>
                 </div>
             </div>
             <div class="row">
