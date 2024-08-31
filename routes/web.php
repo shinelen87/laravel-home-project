@@ -20,6 +20,7 @@ Route::name('admin.')->prefix('admin')->middleware('role:admin|moderator')->grou
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::resource('products', ProductsController::class)->except(['show']);
     Route::resource('categories', CategoriesController::class)->except(['show']);
+    Route::resource('orders', \App\Http\Controllers\Admin\OrdersController::class)->only(['index', 'show']);
 });
 
 Route::resource('products', \App\Http\Controllers\ProductsController::class)->only(['show', 'index']);

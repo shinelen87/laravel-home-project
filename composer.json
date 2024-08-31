@@ -5,7 +5,6 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
         "anayarojo/shoppingcart": "^4.2",
         "appslabke/lara-izitoast": "^1.1",
         "azate/laravel-telegram-login-auth": "^2.4",
@@ -13,13 +12,14 @@
         "guzzlehttp/guzzle": "^7.2",
         "kyslik/column-sortable": "^6.6",
         "laravel-notification-channels/telegram": "^5.0",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.3",
+        "laravel/framework": "^11.0",
+        "laravel/reverb": "^1.0",
+        "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.1",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.5",
         "laraveldaily/laravel-invoices": "^4.0",
-        "nesbot/carbon": "*",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^6.9",
         "spatie/laravel-sluggable": "^3.6",
         "srmklive/paypal": "~3.0"
@@ -31,7 +31,6 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.30",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.1",
         "smknstd/fakerphp-picsum-images": "^1.0",
         "spatie/laravel-ignition": "^2.0"
