@@ -50,4 +50,4 @@ jobs:
         DB_PASSWORD: postgres
         DB_USERNAME: postgres
         DB_PORT: 5432
-      run: php artisan test
+      run: vendor/bin/phpunit
