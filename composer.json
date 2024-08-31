@@ -31,7 +31,7 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.30",
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^10.1",
+        "phpunit/phpunit": "^10.5",
         "smknstd/fakerphp-picsum-images": "^1.0",
         "spatie/laravel-ignition": "^2.0"
     },
